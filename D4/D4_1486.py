@@ -1,19 +1,21 @@
-import sys
-sys.stdin = open('input.txt','r')
+def search(n, N, K, m):
+    global minV
+    if n == N:
+        if minV > m - K and m >= K:
+            minV = m - K
+    elif m >= K and minV <= m - K:
+        return
+
+    else:
+        search(n+1, N, K, m)
+        search(n+1, N, K, m+H[n])
+
 
 T = int(input())
+for tc in range(1, T + 1):
+    N, K = map(int, input().split())
+    H = list(map(int, input().split()))
 
-for tc in range(1,T+1):
-    N, B = map(int,input().split())
-    assist = list(map(int,input().split()))
-    result = []
-
-    for i in range(1 << N):
-        total = 0
-        for j in range(N):
-            if i & (1 << j):
-                total += assist[j]
-        if total >= B:
-            result.append(total)
-
-    print(f'#{tc}',min(result)-B)
+    minV = 10000 * N
+    search(0, N, K, 0)
+    print(f'#{tc}', minV)
